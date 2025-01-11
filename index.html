@@ -83,6 +83,33 @@ html, body {
   transform-origin: left center; /* Expand smoothly from the left */
   transition: all 0.3s ease-in-out;
 }
+/* .section-2 .video-container {
+  position: relative;
+  overflow: hidden;
+} */
+.section-2 .video-container {
+  position: relative;
+  overflow: hidden;
+  --blur-amount: 10px; /* Initial blur amount */
+}
+
+ 
+
+.section-2 .video-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* Optional dark overlay */
+  backdrop-filter: grayscale(100%) blur(var(--blur-amount)); /* Grayscale remains */
+  filter: grayscale(100%) blur(var(--blur-amount)); /* Grayscale remains */
+  z-index: 2;
+  transition: backdrop-filter 0.2s ease, filter 0.2s ease; /* Smooth transition */
+  pointer-events: none;
+}
+
 
  
 </style>
@@ -90,7 +117,7 @@ html, body {
 <body>
   <div class="fullscreen-loader">
     <video id="loader-video" autoplay muted>
-        <source src="./assets//videos/loading.mp4" type="video/mp4">
+        <source src="./assets//videos/loading2.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 </div>
@@ -163,7 +190,7 @@ html, body {
         <video autoplay muted loop playsinline>
           <source src="./assets/videos/tovo.webm" type="video/mp4" />
         </video>
-        <!-- Blur Overlay -->
+ 
       
       </div>
       
@@ -261,6 +288,31 @@ html, body {
   <script>
     // Register GSAP plugins
     // gsap.registerPlugin(ScrollTrigger);
+//     document.addEventListener('DOMContentLoaded', () => {
+//   const videoContainer = document.querySelector('.section-2 .video-container');
+//   const videoOverlay = document.createElement('div');
+
+//   // Create overlay for blur effect
+//   videoOverlay.classList.add('video-blur-overlay');
+//   videoContainer.appendChild(videoOverlay);
+
+//   const video = videoContainer.querySelector('video');
+
+//   video.addEventListener('canplaythrough', () => {
+//     setTimeout(() => {
+//       gsap.to(videoOverlay, {
+//         duration: 2,
+//         opacity: 0,
+//         filter: "blur(0px) grayscale(0%)",
+//         ease: "power2.out",
+//         onComplete: () => {
+//           videoOverlay.remove(); // Remove overlay after animation
+//         }
+//       });
+//     }, 2000); // 2-second delay before animation starts
+//   });
+// });
+
 
 
 
@@ -479,25 +531,46 @@ function startIntersectionObserver() {
         targetSection.scrollIntoView({ behavior: 'smooth', inline: 'start' });
       });
     });
-    gsap.to(".blur-overlay", {
-  backdropFilter: "grayscale(0%) blur(0px)", // Remove blur and grayscale
-  duration: 2,
-  ease: "power2.inOut",
-  scrollTrigger: {
-    trigger: ".section-2",
-    start: "top 80%",           // When the section is 80% in view
-    toggleActions: "play none none none",
-    onEnter: () => {
-      gsap.delayedCall(3, () => {  // Delay by 3 seconds
-        gsap.to(".blur-overlay", {
-          backdropFilter: "grayscale(0%) blur(0px)",
-          duration: 2,
-          ease: "power2.inOut",
-        });
+    // gsap.registerPlugin(ScrollTrigger);
+
+// gsap.to(".video-container video", {
+//   filter: "grayscale(0%) blur(0px)", // Remove grayscale and blur
+//   duration: 2,
+//   ease: "power2.inOut",
+//   scrollTrigger: {
+//     trigger: ".section-2",  // When section-2 comes into view
+//     start: "top 80%",       // Trigger when 80% of section is visible
+//     once: true,             // Runs only once
+//     onEnter: () => {
+//       gsap.delayedCall(2, () => {  // Delay blur removal by 2 seconds
+//         gsap.to(".video-container video", {
+//           filter: "grayscale(0%) blur(0px)",
+//           duration: 2,
+//           ease: "power2.inOut",
+//         });
+//       });
+//     }
+//   }
+// });
+document.addEventListener('DOMContentLoaded', () => {
+  const videoContainer = document.querySelector('.section-2 .video-container');
+  const video = videoContainer.querySelector('video');
+
+  // GSAP animation for removing blur
+  video.addEventListener('canplaythrough', () => {
+    setTimeout(() => {
+      gsap.to(videoContainer, {
+        duration: 2,
+        '--blur-amount': '0px', // Blur animation to 0px
+        ease: 'power2.out',
       });
-    }
-  }
+    }, 8000); // 2-second delay before animation starts
+  });
 });
+
+
+
+
 
   </script>
 

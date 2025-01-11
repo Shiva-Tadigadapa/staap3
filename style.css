@@ -388,7 +388,7 @@ section {
   filter: var(--filter-style);
 }
 
-.section-2 .video-container::after {
+/* .section-2 .video-container::after {
   content: "";
   position: absolute;
   top: 0;
@@ -398,7 +398,7 @@ section {
   filter: grayscale(150%) blur(10px);
   backdrop-filter: blur(20px);
   z-index: 2;
-}
+} */
 
 .section-3 .video-container::after {
   content: "";
