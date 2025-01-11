@@ -60,7 +60,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgb(0, 0, 0);
     z-index: 9999;
   }
 
@@ -283,23 +283,35 @@
   <script>
 
     // GSAP Scroll Functionality
-    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+ // GSAP Scroll Functionality
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-    const sections2 = gsap.utils.toArray(".panel");
-    const container = document.querySelector(".container");
+const sections2 = gsap.utils.toArray(".panel");
+const container = document.querySelector(".container");
 
-    const scrollTrigger = gsap.to(sections2, {
-      xPercent: -100 * (sections2.length - 1),
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".container",
-        pin: true,
-        scrub: 1.5,
-        snap: 1 / (sections2.length - 1),
-        start: "top top",
-        end: "+=4000",
+const scrollTrigger = gsap.to(sections2, {
+  xPercent: -100 * (sections2.length - 1),
+  ease: "none",
+  scrollTrigger: {
+    trigger: ".container",
+    pin: true,
+    scrub: 1.5,
+    snap: function(value, self) {
+      let sectionIndex = Math.round(value * (sections2.length - 1));
+      let currentIndex = Math.floor(value * (sections2.length - 1));
+      let progress = value * (sections2.length - 1) - currentIndex;
+      
+      // Only snap if we're past the halfway point (0.5)
+      if (progress > 0.5) {
+        return (currentIndex + 1) / (sections2.length - 1);
+      } else {
+        return currentIndex / (sections2.length - 1);
       }
-    });
+    },
+    start: "top top",
+    end: "+=4000",
+  }
+});
 
     // Updated navigation click handler
     document.querySelectorAll('.nav_left_child a').forEach(link => {
