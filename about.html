@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Studio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .settings {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        main {
+            display: flex;
+            /* grid-template-columns: 1fr 1fr; */
+            margin-top: 60px;
+            width: 100%;
+            justify-content: space-between;
+             /* justify-content: center; */ 
+              padding: 0 120px;
+            }
+
+        .expertise h2 {
+            font-size: 14px;
+            font-weight: 400;
+            margin-bottom: 40px;
+        }
+
+        .expertise ul {
+            list-style: none;
+            color: #666;
+        }
+
+        .expertise li {
+            margin-bottom: 1px;
+            font-size: 0.75rem;
+        }
+
+        .inside {
+            max-width: 600px;
+        }
+
+        .inside p {
+            margin-bottom: 20px;
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+            margin-top: 40px;
+            gap: 1px;
+        }
+
+        .team-member {
+            aspect-ratio: 1;
+            background: #333;
+        }
+
+         
+        h2{
+            font-size: 12px;
+            margin-bottom: 40px;
+        }
+        .team{
+            margin-top: 60px;
+            margin-bottom: -25px;
+        }
+
+  /* Dark Mode */
+  .dark-mode {
+            background-color: black;
+            color: white;
+        }
+
+        /* Text Mode */
+        .text-mode {
+            background-color: white;
+            color: black;
+            font-family: "Times New Roman", serif;
+        }
+
+        /* Monochrome Mode */
+        .monochrome-mode {
+            filter: grayscale(100%);
+        }
+
+    </style>
+</head>
+<body>
+    
+
+    <main>
+
+            <section class="expertise">
+                <h2>expertise</h2>
+                <ul>
+                    <li>Architecture</li>
+                    <li>UX/UI</li>
+                    <li>Duration</li>
+                    <li>Spatial branding</li>
+                </ul>
+            </section>
+            <div>
+
+                <section class="inside">
+                    <h2>Inside</h2>
+                    <p>At Staap, we thrive on the power of creativity and the fusion of diverse disciplines. Our team is a tapestry of minds, each bringing unique skills, experiences, and perspectives that enrich every project we undertake. We believe that diversity enriches the design process, inspiring compelling creations that stand out.</p>
+                    
+                    <p>Our studio is a collaborative hub where architects, artists, and creatives from various disciplines come together to push boundaries. Each project transcends stereotypes, embodying exceptional artistry and originality.</p>
+                    
+                    <p>Staap's design philosophy is rooted in flexibility and context. Our hybrid approach allows us to tailor solutions to the specific needs of each project, ensuring outputs that are not only visually captivating but also highly functional and conceptually meaningful.</p>
+                </section>
+                <h2 class=" team">Team</h2>
+                <div class="team-grid">
+                    <div class="team-member"></div>
+                    <div class="team-member"></div>
+                    <div class="team-member"></div>
+                    <div class="team-member"></div>
+                    <div class="team-member"></div>
+                    <div class="team-member"></div>
+                </div>
+            </div>
+            </main>
+    
+            <script>
+                const urlParams = new URLSearchParams(window.location.search);
+                const theme = urlParams.get("theme");
+              
+                if (theme) {
+                  document.body.className = `${theme}-mode`;
+                }
+              </script>
+    
+</body>
+</html>
