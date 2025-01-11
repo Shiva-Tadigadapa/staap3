@@ -49,6 +49,19 @@
     padding: 0;
     overflow-y: hidden;
   }
+/* Hide the fullscreen loader on screens smaller than 768px (mobile) */
+@media (max-width: 768px) {
+  .fullscreen-loader {
+    display: none !important;
+     
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+  }
+}
 
   /* Fullscreen loader */
   .fullscreen-loader {
