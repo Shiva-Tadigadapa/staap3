@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R320-staap</title>
+    <style>
+            @font-face {
+            font-family: "Helvetica";
+            src: url("../assets/fonts/Helvetica.ttf") format("truetype");
+        }
+
+        @font-face {
+            font-family: "Helvetica Bold";
+            src: url("../assets/fonts/Helvetica-Bold.ttf") format("truetype");
+        }
+
+        @font-face {
+            font-family: "Helvetica Oblique";
+            src: url("../assets/fonts/Helvetica-Oblique.ttf") format("truetype");
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; */
+            
+            font-family: Helvetica, sans-serif;
+        }
+
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        body {
+            background-color: #000;
+            color: #fff;
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .container {
+            height: 150vh;
+            padding: 20px 60px;
+            margin-top: 80px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .settings {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .project-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .project-details {
+            max-width: 600px;
+        }
+
+        .project-title {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .project-description {
+            color: #3c3c3c;
+            font-size: 0.65rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .project-meta {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 10px;
+            color: #666;
+            font-size: 0.75rem;
+        }
+        .project-meta dt {
+            font-weight: 400;
+        }
+
+        .project-meta dd {
+            color: #999;
+        }
+
+        .project-images {
+            display: grid;
+            gap: 4px;
+        }
+
+        .image-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #333;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 300px;
+        }
+
+        .video-container {
+            top: -10px;
+            right: -20px;
+        }
+
+        .stimage {
+            position: relative;
+            top: 300px;
+        }
+
+        .seconimage {
+            position: relative;
+            top: 305px;
+            display: flex;
+            gap: 4px;
+        }
+
+        .seconimage {
+            width: 100%;
+            aspect-ratio: 16/8;
+        }
+
+        .imagfdfde {
+            width: 80%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            background-color: black;
+            color: white;
+        }
+
+        /* Text Mode */
+        .text-mode {
+            background-color: white;
+            color: black;
+            font-family: "Times New Roman", serif;
+        }
+
+        /* Monochrome Mode */
+        .monochrome-mode {
+            filter: grayscale(100%);
+        }
+         /* For Webkit-based browsers (Chrome, Edge, Safari) */
+         ::-webkit-scrollbar {
+            width: 0;
+            /* Removes scrollbar width */
+            height: 0;
+            /* Removes scrollbar height for horizontal scrollbars */
+        }
+
+        /* For Firefox */
+        * {
+            scrollbar-width: none;
+            /* Hides the scrollbar */
+            -ms-overflow-style: none;
+            /* For Internet Explorer and Edge */
+        }
+
+        .backbtn {
+        position: fixed;
+        top: -50px;
+        left: 40px;
+        z-index: 1000;
+    }
+
+    .backbtn button {  
+        background-color: black;
+        border: none;
+        padding: 2.5px 5px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+    .backbtn button img{
+
+        width: 80%;
+    }
+
+    .backbtn button:hover {
+        background-color: #25232393;
+    }
+    </style>
+    <!-- Locomotive Scroll CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll/dist/locomotive-scroll.min.css">
+</head>
+
+<body>
+    <div class="container scrollable-section" data-scroll-container id="scrollable-section">
+        <div class="project-content">
+            <div class="backbtn">
+                <button onclick="goBack()">
+                    <img src="./assets//videos/left.png" alt="">
+                </button>
+            </div>
+            
+            <div class="project-details">
+                <h1 class="project-title">R320</h1>
+                <p class="project-description">
+                    Smart living Experience Center is designed to captivate and engage through a strategic interplay of
+                    lines, curves, light, and darkness. The space is thoughtfully segmented, with each section
+                    highlighting distinct elements and offering varying levels of illumination. This approach creates an
+                    immersive atmosphere that invites visitors to explore the subtle nuances of each design element,
+                    creating a journey of discovery and ultimately leaving them with a memorable and engaging
+                    experience.
+                </p>
+                <div style=" font-size: 12px; color: #313131; gap: 80px; display: flex;">
+                    <div style=" display: flex; flex-direction: column; gap: 4px;">
+                        <p>Typology</p>
+                        <p>Location</p>
+                        <p>Status</p>
+                        <p>Area</p>
+                        <p>Year</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;  text-align: right;">
+                        <p>Commercial</p>
+                        <p>Ashok Nagar, Chennai</p>
+                        <p>Completed</p>
+                        <p>80 m² / 870 ft²</p>
+                        <p>2023</p>
+                    </div>
+                </div>
+            </div>
+            <div class="project-images" style=" position: relative;">
+                <div style=" position: absolute;" class="video-container">
+                    <video autoplay muted loop playsinline>
+                        <source src="./assets/videos/pub.mp4" type="video/mp4" />
+                    </video>
+                </div>
+                <div class="image-container stimage">
+                    <img src="./assets/videos/eaabed164753257.63fcdaaae8d40.jpg"
+                        alt="Smart Living Experience Center Detail">
+                </div>
+                <div style=" width: 500px;" class="seconimage">
+                    <img class="imagfdfde" src="/assets/videos/eaabed164753257.63fcdaaae8d40.jpg"
+                        alt="Smart Living Experience Center Detail">
+                    <img class="imagfdfde"
+                        src="/assets/videos/Snapinsta.app_334480343_923198865475229_2361516323191347728_n_1080.jpg"
+                        alt="Smart Living Experience Center Overview">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Locomotive Scroll JS -->
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll/dist/locomotive-scroll.min.js"></script>
+    <script>
+        const scroll = new LocomotiveScroll({
+            el: document.querySelector('[data-scroll-container]'),
+            smooth: true,
+        });
+        const scrollableSection = document.getElementById('scrollable-section');
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        scrollableSection.classList.add('active');
+                    } else {
+                        scrollableSection.classList.remove('active');
+                    }
+                });
+            },
+            {
+                threshold: 1.0, // Trigger only when the section is fully visible
+            }
+        );
+
+        observer.observe(scrollableSection);
+        const urlParams = new URLSearchParams(window.location.search);
+        const theme = urlParams.get("theme");
+
+        if (theme) {
+            document.body.className = `${theme}-mode`;
+        }
+    </script>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+</body>
+
+</html>

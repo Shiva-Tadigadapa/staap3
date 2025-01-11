@@ -155,12 +155,12 @@
     <a>publication</a>
     <a>connect</a>
     <a class="email-link">write@staap.in</a>
-    <div class="mode-options">
-      <span data-mode="text">text mode [N]</span>
-      <span data-mode="dark">dark mode [N]</span>
-      <span data-mode="monochrome">monochromatic [N]</span>
-    </div>
   </div> -->
+  <div class="mode-options">
+    <span data-mode="text">text mode [N]</span>
+    <span data-mode="dark">dark mode [N]</span>
+    <span data-mode="monochrome">monochromatic [N]</span>
+  </div>
 
   <div class="container">
     <section class="section-1 panel" id="home">
@@ -499,11 +499,11 @@ const scrollTrigger = gsap.to(sections2, {
 
     // Email Link and Mode Options Visibility
     const emailLink = document.querySelector(".email-link");
-    // const modeOptions = document.querySelector(".mode-options");
+    const modeOptions = document.querySelector(".mode-options");
 
     const updateNavContent = (index) => {
-      emailLink.style.display = index === 0 ? "block" : "none";
-      // modeOptions.style.display = index === 0 ? "none" : "flex";
+      emailLink.style.display = index === 0 ? "block" : "block";
+      modeOptions.style.display = index === 0 ? "none" : "none";
     };
 
     // IntersectionObserver for Active Links

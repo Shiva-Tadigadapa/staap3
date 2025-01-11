@@ -472,11 +472,31 @@
         }
 
         function handleRowClick(row) {
-            const projectName = row.getAttribute('data-project-name');
-            if (projectName) {
-                window.location.href = `/${projectName}`;
-            }
+    const projectName = row.getAttribute('data-project-name');
+    if (projectName) {
+        // Remove any existing .html and add it back to ensure proper extension
+        const urlWithExtension = `/${projectName.replace('.html', '')}.html`;
+        
+        if (window.self !== window.top) {
+            // We're in an iframe, so navigate the parent window
+            window.parent.location.href = urlWithExtension;
+        } else {
+            // Direct navigation if not in iframe
+            window.location.href = urlWithExtension;
         }
+    }
+}
+
+// Attach event listener to rows for redirection
+document.querySelectorAll('.table tbody tr').forEach(row => {
+    if (!row.classList.contains('expanded-row')) { // Only attach to main rows, not expanded rows
+        row.addEventListener('click', e => {
+            e.preventDefault(); // Prevent default behavior
+            e.stopPropagation(); // Prevent event bubbling
+            handleRowClick(row);
+        });
+    }
+});
 
         let areRowsExpanded = false;
 
