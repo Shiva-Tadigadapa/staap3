@@ -469,8 +469,35 @@
     `);
 
     let isSortedAscending = true;
-    let areRowsExpanded = false;
+    let areRowsExpanded = false; 
 
+function toggleRows(forceExpand = null) {
+    const rows = document.querySelectorAll('.table tbody tr');
+    const isMobile = window.innerWidth <= 768; // Define mobile breakpoint
+    
+    // If forceExpand is provided, use that value, otherwise toggle current state
+    const shouldExpand = forceExpand !== null ? forceExpand : !areRowsExpanded;
+    
+    rows.forEach(row => {
+        const nextRow = row.nextElementSibling;
+        if (nextRow && nextRow.classList.contains('expanded-row')) {
+            nextRow.style.display = shouldExpand ? 'table-row' : 'none';
+            row.classList.toggle('active-row', shouldExpand);
+        }
+    });
+
+    areRowsExpanded = shouldExpand;
+    document.getElementById('expandText').textContent = shouldExpand ? 'expand [Y]' : 'expand [N]';
+}
+
+ 
+// Handle resize events
+window.addEventListener('resize', () => {
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile && !areRowsExpanded) {
+        toggleRows(true); // Expand on mobile
+    }
+});
     function sortRowsByYear() {
         const tableBody = document.querySelector('.table tbody');
         const rowPairs = [];

@@ -261,8 +261,20 @@ section {
          width: 100%;
          overflow: scroll;
      }
+     .fixed_child {
+      position: fixed !important;
+      bottom: 45px !important;
+      right: 20px !important;
+      /* transform: translateX(-50%) !important; */
+      white-space: nowrap;
+    }
     
-   
+     .fixed_child2{
+      position: fixed !important;
+      bottom: 30px !important;
+      right: -35px !important;
+      transform: translateX(-50%) !important;
+    }
 }
 
 /* Animation for menu items */
@@ -473,6 +485,10 @@ body.monochrome-mode {
 .fixed_child {
   flex: 1; /* Added flex grow */
   text-align: center; /* Center the copyright text */
+}
+.fixed_child2{
+  position: fixed;
+  right: 20px;
 }
 
 
