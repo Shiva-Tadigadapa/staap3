@@ -21,27 +21,32 @@
             font-family: "Helvetica Oblique";
             src: url("../assets/fonts/Helvetica-Oblique.ttf") format("truetype");
         }
-        @media (max-width: 768px) {
-  .container {
-    display: grid;
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
-    grid-auto-flow: dense !important; /* Prioritizes filling in reverse order */
-    direction: rtl !important;       
-}
 
-  .container > * {
-    direction: ltr !important; /* Keeps content inside normal */
-  }
-  body{
-    font-size: 10px !important;
-    white-space: nowrap !important;
-  }
-  .sort-text {
-            position: relative;
-            left: -55% !important;
+        @media (max-width: 768px) {
+            .container {
+                display: grid;
+                grid-template-columns: 1fr !important;
+                gap: 10px !important;
+                grid-auto-flow: dense !important;
+                /* Prioritizes filling in reverse order */
+                direction: rtl !important;
+            }
+
+            .container>* {
+                direction: ltr !important;
+                /* Keeps content inside normal */
+            }
+
+            body {
+                font-size: 10px !important;
+                white-space: nowrap !important;
+            }
+
+            .sort-text {
+                position: relative;
+                left: -55% !important;
+            }
         }
-}
 
         body {
             margin: 0;
@@ -260,11 +265,9 @@
                         <td colspan="5">
                             <div class="image-gallery">
                                 <img src="https://ik.imagekit.io/7da6fpjdo/staap/r320/render1-min.png?updatedAt=1735040722348"
-                                    alt="R320" onmouseover="showImage(this.src,'R320')"
-                                    onclick="clickImage(this.src)">
+                                    alt="R320" onmouseover="showImage(this.src,'R320')" onclick="clickImage(this.src)">
                                 <img src="https://ik.imagekit.io/7da6fpjdo/staap/r320/03-min.jpg?updatedAt=1735040788597"
-                                    alt="R320" onmouseover="showImage(this.src,'R320')"
-                                    onclick="clickImage(this.src)">
+                                    alt="R320" onmouseover="showImage(this.src,'R320')" onclick="clickImage(this.src)">
                                 <img src="https://ik.imagekit.io/7da6fpjdo/staap/r320/04-min.jpg?updatedAt=1735040736394"
                                     alt="Random Image 1" onmouseover="showImage(this.src,'R320')"
                                     onclick="clickImage(this.src)">
@@ -428,35 +431,35 @@
         // });
 
     </script>
-  <script>
-    function disableRightClick(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }
+    <script>
+        function disableRightClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
 
-    // Add event listeners when document is ready
-    document.addEventListener('DOMContentLoaded', () => {
-        // Disable right click on all images in the gallery
-        document.querySelectorAll('.image-gallery img').forEach(img => {
-            img.addEventListener('contextmenu', disableRightClick);
+        // Add event listeners when document is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            // Disable right click on all images in the gallery
+            document.querySelectorAll('.image-gallery img').forEach(img => {
+                img.addEventListener('contextmenu', disableRightClick);
+            });
+
+            // Disable right click on the dynamic image
+            const dynamicImage = document.getElementById('dynamicImage');
+            if (dynamicImage) {
+                dynamicImage.addEventListener('contextmenu', disableRightClick);
+            }
+
+            // Disable right click on the image display container
+            const imageDisplay = document.getElementById('imageDisplay');
+            if (imageDisplay) {
+                imageDisplay.addEventListener('contextmenu', disableRightClick);
+            }
         });
 
-        // Disable right click on the dynamic image
-        const dynamicImage = document.getElementById('dynamicImage');
-        if (dynamicImage) {
-            dynamicImage.addEventListener('contextmenu', disableRightClick);
-        }
-
-        // Disable right click on the image display container
-        const imageDisplay = document.getElementById('imageDisplay');
-        if (imageDisplay) {
-            imageDisplay.addEventListener('contextmenu', disableRightClick);
-        }
-    });
-
-    // Optional: Add CSS to prevent image dragging
-    document.head.insertAdjacentHTML('beforeend', `
+        // Optional: Add CSS to prevent image dragging
+        document.head.insertAdjacentHTML('beforeend', `
         <style>
             .image-gallery img,
             #dynamicImage {
@@ -468,193 +471,207 @@
         </style>
     `);
 
-    let isSortedAscending = true;
-    let areRowsExpanded = false; 
+        let isSortedAscending = true;
+        let areRowsExpanded = false;
 
-function toggleRows(forceExpand = null) {
-    const rows = document.querySelectorAll('.table tbody tr');
-    const isMobile = window.innerWidth <= 768; // Define mobile breakpoint
-    
-    // If forceExpand is provided, use that value, otherwise toggle current state
-    const shouldExpand = forceExpand !== null ? forceExpand : !areRowsExpanded;
-    
-    rows.forEach(row => {
-        const nextRow = row.nextElementSibling;
-        if (nextRow && nextRow.classList.contains('expanded-row')) {
-            nextRow.style.display = shouldExpand ? 'table-row' : 'none';
-            row.classList.toggle('active-row', shouldExpand);
+        function toggleRows(forceExpand = null) {
+            const rows = document.querySelectorAll('.table tbody tr');
+            const isMobile = window.innerWidth <= 768;
+
+            // If forceExpand is provided, use that value, otherwise toggle current state
+            const shouldExpand = forceExpand !== null ? forceExpand : !areRowsExpanded;
+
+            rows.forEach(row => {
+                const nextRow = row.nextElementSibling;
+                if (nextRow && nextRow.classList.contains('expanded-row')) {
+                    nextRow.style.display = shouldExpand ? 'table-row' : 'none';
+                    row.classList.toggle('active-row', shouldExpand);
+                }
+            });
+
+            areRowsExpanded = shouldExpand;
+            document.getElementById('expandText').textContent = shouldExpand ? 'expand [Y]' : 'expand [N]';
         }
-    });
 
-    areRowsExpanded = shouldExpand;
-    document.getElementById('expandText').textContent = shouldExpand ? 'expand [Y]' : 'expand [N]';
-}
-
- 
-// Handle resize events
-window.addEventListener('resize', () => {
-    const isMobile = window.innerWidth <= 768;
-    if (isMobile && !areRowsExpanded) {
-        toggleRows(true); // Expand on mobile
-    }
-});
-    function sortRowsByYear() {
-        const tableBody = document.querySelector('.table tbody');
-        const rowPairs = [];
-        const allRows = Array.from(tableBody.rows);
-
-        for (let i = 0; i < allRows.length; i += 2) {
-            if (allRows[i] && allRows[i + 1]) {
-                rowPairs.push({
-                    mainRow: allRows[i],
-                    expandedRow: allRows[i + 1]
-                });
+        // Function to check and handle mobile state
+        function handleMobileState() {
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile && !areRowsExpanded) {
+                toggleRows(true); // Force expand on mobile
             }
         }
 
-        rowPairs.sort((a, b) => {
-            const yearA = parseInt(a.mainRow.cells[4].textContent.trim());
-            const yearB = parseInt(b.mainRow.cells[4].textContent.trim());
-            return isSortedAscending ? yearA - yearB : yearB - yearA;
-        });
+        // Add these event listeners in your DOMContentLoaded event
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial check for mobile state
+            handleMobileState();
 
-        while (tableBody.firstChild) {
-            tableBody.removeChild(tableBody.firstChild);
+            // Handle resize events with debouncing
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(handleMobileState, 250); // Debounce resize events
+            });
+
+            // Rest of your existing DOMContentLoaded code...
+        });
+        function sortRowsByYear() {
+            const tableBody = document.querySelector('.table tbody');
+            const rowPairs = [];
+            const allRows = Array.from(tableBody.rows);
+
+            for (let i = 0; i < allRows.length; i += 2) {
+                if (allRows[i] && allRows[i + 1]) {
+                    rowPairs.push({
+                        mainRow: allRows[i],
+                        expandedRow: allRows[i + 1]
+                    });
+                }
+            }
+
+            rowPairs.sort((a, b) => {
+                const yearA = parseInt(a.mainRow.cells[4].textContent.trim());
+                const yearB = parseInt(b.mainRow.cells[4].textContent.trim());
+                return isSortedAscending ? yearA - yearB : yearB - yearA;
+            });
+
+            while (tableBody.firstChild) {
+                tableBody.removeChild(tableBody.firstChild);
+            }
+
+            rowPairs.forEach(pair => {
+                tableBody.appendChild(pair.mainRow);
+                tableBody.appendChild(pair.expandedRow);
+            });
+
+            isSortedAscending = !isSortedAscending;
+            document.getElementById('sortButton').textContent = isSortedAscending ? 'sort' : 'sort';
         }
 
-        rowPairs.forEach(pair => {
-            tableBody.appendChild(pair.mainRow);
-            tableBody.appendChild(pair.expandedRow);
-        });
+        const dynamicImage = document.getElementById('dynamicImage');
+        const dynamicText = document.getElementById('dynamicText');
 
-        isSortedAscending = !isSortedAscending;
-        document.getElementById('sortButton').textContent = isSortedAscending ? 'sort' : 'sort';
-    }
-
-    const dynamicImage = document.getElementById('dynamicImage');
-    const dynamicText = document.getElementById('dynamicText');
-
-    function showImage(src, text = '') {
-        if (!src) return;
-        dynamicImage.src = src;
-        dynamicImage.style.display = 'block';
-        dynamicText.textContent = text || '';
-    }
-
-    function updateProjectDetails(row) {
-        if (row && !row.classList.contains('expanded-row')) {
-            document.getElementById('projectName').textContent = row.cells[0].textContent || '';
-            document.getElementById('location').textContent = row.cells[1].textContent || '';
-            document.getElementById('typology').textContent = row.cells[2].textContent || '';
-            document.getElementById('year').textContent = row.cells[4].textContent || '';
-        }
-    }
-
-    // Keep track of the last hovered image
-    let lastHoveredImageSrc = '';
-
-    function hideImage() {
-        // Do not hide the image; instead, keep it displayed until a new one is hovered
-        if (lastHoveredImageSrc) {
-            dynamicImage.src = lastHoveredImageSrc;
+        function showImage(src, text = '') {
+            if (!src) return;
+            dynamicImage.src = src;
             dynamicImage.style.display = 'block';
-        } else {
-            dynamicImage.style.display = 'none';
-            dynamicText.textContent = '';
-            // Clear project details
-            document.getElementById('projectName').textContent = '';
-            document.getElementById('location').textContent = '';
-            document.getElementById('typology').textContent = '';
-            document.getElementById('year').textContent = '';
+            dynamicText.textContent = text || '';
         }
-    }
 
-    function handleRowClick(row) {
-        const projectName = row.getAttribute('data-project-name');
-        if (projectName) {
-            const urlWithExtension = `/${projectName.replace('.html', '')}.html`;
-            if (window.self !== window.top) {
-                window.parent.location.href = urlWithExtension;
+        function updateProjectDetails(row) {
+            if (row && !row.classList.contains('expanded-row')) {
+                document.getElementById('projectName').textContent = row.cells[0].textContent || '';
+                document.getElementById('location').textContent = row.cells[1].textContent || '';
+                document.getElementById('typology').textContent = row.cells[2].textContent || '';
+                document.getElementById('year').textContent = row.cells[4].textContent || '';
+            }
+        }
+
+        // Keep track of the last hovered image
+        let lastHoveredImageSrc = '';
+
+        function hideImage() {
+            // Do not hide the image; instead, keep it displayed until a new one is hovered
+            if (lastHoveredImageSrc) {
+                dynamicImage.src = lastHoveredImageSrc;
+                dynamicImage.style.display = 'block';
             } else {
-                window.location.href = urlWithExtension;
+                dynamicImage.style.display = 'none';
+                dynamicText.textContent = '';
+                // Clear project details
+                document.getElementById('projectName').textContent = '';
+                document.getElementById('location').textContent = '';
+                document.getElementById('typology').textContent = '';
+                document.getElementById('year').textContent = '';
             }
         }
-    }
 
-    function toggleRows() {
-        const rows = document.querySelectorAll('.table tbody tr');
-
-        rows.forEach(row => {
-            const nextRow = row.nextElementSibling;
-            if (nextRow && nextRow.classList.contains('expanded-row')) {
-                nextRow.style.display = areRowsExpanded ? 'none' : 'table-row';
-                row.classList.toggle('active-row', !areRowsExpanded);
+        function handleRowClick(row) {
+            const projectName = row.getAttribute('data-project-name');
+            if (projectName) {
+                const urlWithExtension = `/${projectName.replace('.html', '')}.html`;
+                if (window.self !== window.top) {
+                    window.parent.location.href = urlWithExtension;
+                } else {
+                    window.location.href = urlWithExtension;
+                }
             }
-        });
+        }
 
-        areRowsExpanded = !areRowsExpanded;
-        document.getElementById('expandText').textContent = areRowsExpanded ? 'expand [Y]' : 'expand [N]';
-    }
+        function toggleRows() {
+            const rows = document.querySelectorAll('.table tbody tr');
 
-    // Set up event listeners
-    document.addEventListener('DOMContentLoaded', () => {
-        // Sort button listener
-        document.getElementById('sortButton').addEventListener('click', sortRowsByYear);
+            rows.forEach(row => {
+                const nextRow = row.nextElementSibling;
+                if (nextRow && nextRow.classList.contains('expanded-row')) {
+                    nextRow.style.display = areRowsExpanded ? 'none' : 'table-row';
+                    row.classList.toggle('active-row', !areRowsExpanded);
+                }
+            });
 
-        // Expand button listener
-        document.getElementById('expandButton').addEventListener('click', toggleRows);
+            areRowsExpanded = !areRowsExpanded;
+            document.getElementById('expandText').textContent = areRowsExpanded ? 'expand [Y]' : 'expand [N]';
+        }
 
-        // Main row listeners
-        document.querySelectorAll('.table tbody tr').forEach(row => {
-            if (!row.classList.contains('expanded-row')) {
-                row.addEventListener('mouseover', (e) => {
-                    const imageSrc = row.getAttribute('data-image');
-                    lastHoveredImageSrc = imageSrc;  // Store the last hovered image source
-                    showImage(imageSrc, row.getAttribute('data-text'));
-                    updateProjectDetails(row);
+        // Set up event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sort button listener
+            document.getElementById('sortButton').addEventListener('click', sortRowsByYear);
+
+            // Expand button listener
+            document.getElementById('expandButton').addEventListener('click', toggleRows);
+
+            // Main row listeners
+            document.querySelectorAll('.table tbody tr').forEach(row => {
+                if (!row.classList.contains('expanded-row')) {
+                    row.addEventListener('mouseover', (e) => {
+                        const imageSrc = row.getAttribute('data-image');
+                        lastHoveredImageSrc = imageSrc;  // Store the last hovered image source
+                        showImage(imageSrc, row.getAttribute('data-text'));
+                        updateProjectDetails(row);
+                    });
+
+                    row.addEventListener('mouseout', hideImage);  // Keep displaying the last hovered image
+
+                    row.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleRowClick(row);
+                    });
+                }
+            });
+
+            // Gallery image listeners
+            document.querySelectorAll('.image-gallery img').forEach(img => {
+                img.addEventListener('mouseover', (e) => {
+                    const onmouseoverAttr = e.target.getAttribute('onmouseover');
+                    let text = '';
+                    if (onmouseoverAttr) {
+                        const match = onmouseoverAttr.match(/showImage\(this\.src,'(.+?)'\)/);
+                        if (match && match[1]) {
+                            text = match[1];
+                        }
+                    }
+
+                    lastHoveredImageSrc = e.target.src;  // Store the last hovered image source
+                    showImage(e.target.src, text);
+                    const parentRow = e.target.closest('tr').previousElementSibling;
+                    if (parentRow) {
+                        updateProjectDetails(parentRow);
+                    }
                 });
 
-                row.addEventListener('mouseout', hideImage);  // Keep displaying the last hovered image
+                img.addEventListener('mouseout', hideImage);  // Keep displaying the last hovered image
 
-                row.addEventListener('click', (e) => {
-                    e.preventDefault();
+                img.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    handleRowClick(row);
+                    if (typeof clickImage === 'function') {
+                        clickImage(e.target.src);
+                    }
                 });
-            }
+            });
         });
-
-       // Gallery image listeners
-       document.querySelectorAll('.image-gallery img').forEach(img => {
-           img.addEventListener('mouseover', (e) => {
-               const onmouseoverAttr = e.target.getAttribute('onmouseover');
-               let text = '';
-               if (onmouseoverAttr) {
-                   const match = onmouseoverAttr.match(/showImage\(this\.src,'(.+?)'\)/);
-                   if (match && match[1]) {
-                       text = match[1];
-                   }
-               }
-
-               lastHoveredImageSrc = e.target.src;  // Store the last hovered image source
-               showImage(e.target.src, text);
-               const parentRow = e.target.closest('tr').previousElementSibling;
-               if (parentRow) {
-                   updateProjectDetails(parentRow);
-               }
-           });
-
-           img.addEventListener('mouseout', hideImage);  // Keep displaying the last hovered image
-
-           img.addEventListener('click', (e) => {
-               e.stopPropagation();
-               if (typeof clickImage === 'function') {
-                   clickImage(e.target.src);
-               }
-           });
-       });
-   });
-</script>
+    </script>
 
 
 
