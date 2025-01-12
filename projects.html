@@ -239,10 +239,10 @@
                         <td colspan="5">
                             <div class="image-gallery">
                                 <img src="https://ik.imagekit.io/7da6fpjdo/staap/r320/render1-min.png?updatedAt=1735040722348"
-                                    alt="Random Image 1" onmouseover="showImage(this.src,'R320')"
+                                    alt="R320" onmouseover="showImage(this.src,'R320')"
                                     onclick="clickImage(this.src)">
                                 <img src="https://ik.imagekit.io/7da6fpjdo/staap/r320/03-min.jpg?updatedAt=1735040788597"
-                                    alt="Random Image 1" onmouseover="showImage(this.src,'R320')"
+                                    alt="R320" onmouseover="showImage(this.src,'R320')"
                                     onclick="clickImage(this.src)">
                                 <img src="https://ik.imagekit.io/7da6fpjdo/staap/r320/04-min.jpg?updatedAt=1735040736394"
                                     alt="Random Image 1" onmouseover="showImage(this.src,'R320')"
@@ -407,132 +407,207 @@
         // });
 
     </script>
-    <script>
-        let isSortedAscending = true; // Track sorting order
+  <script>
+    function disableRightClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
 
-        // Function to sort rows by the Year column (5th column)
-        function sortRowsByYear() {
-            const tableBody = document.querySelector('.table tbody');
+    // Add event listeners when document is ready
+    document.addEventListener('DOMContentLoaded', () => {
+        // Disable right click on all images in the gallery
+        document.querySelectorAll('.image-gallery img').forEach(img => {
+            img.addEventListener('contextmenu', disableRightClick);
+        });
 
-            // Get all row pairs (main row + expanded row)
-            const rowPairs = [];
-            const allRows = Array.from(tableBody.rows);
-
-            // Group rows into pairs
-            for (let i = 0; i < allRows.length; i += 2) {
-                if (allRows[i] && allRows[i + 1]) {
-                    rowPairs.push({
-                        mainRow: allRows[i],
-                        expandedRow: allRows[i + 1]
-                    });
-                }
-            }
-
-            // Sort the pairs based on the year in the main row
-            rowPairs.sort((a, b) => {
-                const yearA = parseInt(a.mainRow.cells[4].textContent.trim());
-                const yearB = parseInt(b.mainRow.cells[4].textContent.trim());
-                return isSortedAscending ? yearA - yearB : yearB - yearA;
-            });
-
-            // Clear the table
-            while (tableBody.firstChild) {
-                tableBody.removeChild(tableBody.firstChild);
-            }
-
-            // Re-append the sorted pairs
-            rowPairs.forEach(pair => {
-                tableBody.appendChild(pair.mainRow);
-                tableBody.appendChild(pair.expandedRow);
-            });
-
-            // Toggle sorting order for next click
-            isSortedAscending = !isSortedAscending;
-
-            // Update sort button text based on order
-            document.getElementById('sortButton').textContent =
-                isSortedAscending ? 'sort' : 'sort';
+        // Disable right click on the dynamic image
+        const dynamicImage = document.getElementById('dynamicImage');
+        if (dynamicImage) {
+            dynamicImage.addEventListener('contextmenu', disableRightClick);
         }
 
-        // Attach event listener to the sort button for sorting
+        // Disable right click on the image display container
+        const imageDisplay = document.getElementById('imageDisplay');
+        if (imageDisplay) {
+            imageDisplay.addEventListener('contextmenu', disableRightClick);
+        }
+    });
+
+    // Optional: Add CSS to prevent image dragging
+    document.head.insertAdjacentHTML('beforeend', `
+        <style>
+            .image-gallery img,
+            #dynamicImage {
+                user-select: none;
+                -webkit-user-select: none;
+                -webkit-user-drag: none;
+                -webkit-touch-callout: none;
+            }
+        </style>
+    `);
+
+    let isSortedAscending = true;
+    let areRowsExpanded = false;
+
+    function sortRowsByYear() {
+        const tableBody = document.querySelector('.table tbody');
+        const rowPairs = [];
+        const allRows = Array.from(tableBody.rows);
+
+        for (let i = 0; i < allRows.length; i += 2) {
+            if (allRows[i] && allRows[i + 1]) {
+                rowPairs.push({
+                    mainRow: allRows[i],
+                    expandedRow: allRows[i + 1]
+                });
+            }
+        }
+
+        rowPairs.sort((a, b) => {
+            const yearA = parseInt(a.mainRow.cells[4].textContent.trim());
+            const yearB = parseInt(b.mainRow.cells[4].textContent.trim());
+            return isSortedAscending ? yearA - yearB : yearB - yearA;
+        });
+
+        while (tableBody.firstChild) {
+            tableBody.removeChild(tableBody.firstChild);
+        }
+
+        rowPairs.forEach(pair => {
+            tableBody.appendChild(pair.mainRow);
+            tableBody.appendChild(pair.expandedRow);
+        });
+
+        isSortedAscending = !isSortedAscending;
+        document.getElementById('sortButton').textContent = isSortedAscending ? 'sort' : 'sort';
+    }
+
+    const dynamicImage = document.getElementById('dynamicImage');
+    const dynamicText = document.getElementById('dynamicText');
+
+    function showImage(src, text = '') {
+        if (!src) return;
+        dynamicImage.src = src;
+        dynamicImage.style.display = 'block';
+        dynamicText.textContent = text || '';
+    }
+
+    function updateProjectDetails(row) {
+        if (row && !row.classList.contains('expanded-row')) {
+            document.getElementById('projectName').textContent = row.cells[0].textContent || '';
+            document.getElementById('location').textContent = row.cells[1].textContent || '';
+            document.getElementById('typology').textContent = row.cells[2].textContent || '';
+            document.getElementById('year').textContent = row.cells[4].textContent || '';
+        }
+    }
+
+    // Keep track of the last hovered image
+    let lastHoveredImageSrc = '';
+
+    function hideImage() {
+        // Do not hide the image; instead, keep it displayed until a new one is hovered
+        if (lastHoveredImageSrc) {
+            dynamicImage.src = lastHoveredImageSrc;
+            dynamicImage.style.display = 'block';
+        } else {
+            dynamicImage.style.display = 'none';
+            dynamicText.textContent = '';
+            // Clear project details
+            document.getElementById('projectName').textContent = '';
+            document.getElementById('location').textContent = '';
+            document.getElementById('typology').textContent = '';
+            document.getElementById('year').textContent = '';
+        }
+    }
+
+    function handleRowClick(row) {
+        const projectName = row.getAttribute('data-project-name');
+        if (projectName) {
+            const urlWithExtension = `/${projectName.replace('.html', '')}.html`;
+            if (window.self !== window.top) {
+                window.parent.location.href = urlWithExtension;
+            } else {
+                window.location.href = urlWithExtension;
+            }
+        }
+    }
+
+    function toggleRows() {
+        const rows = document.querySelectorAll('.table tbody tr');
+
+        rows.forEach(row => {
+            const nextRow = row.nextElementSibling;
+            if (nextRow && nextRow.classList.contains('expanded-row')) {
+                nextRow.style.display = areRowsExpanded ? 'none' : 'table-row';
+                row.classList.toggle('active-row', !areRowsExpanded);
+            }
+        });
+
+        areRowsExpanded = !areRowsExpanded;
+        document.getElementById('expandText').textContent = areRowsExpanded ? 'expand [Y]' : 'expand [N]';
+    }
+
+    // Set up event listeners
+    document.addEventListener('DOMContentLoaded', () => {
+        // Sort button listener
         document.getElementById('sortButton').addEventListener('click', sortRowsByYear);
 
-        // Rest of your existing code remains the same
-        const dynamicImage = document.getElementById('dynamicImage');
-        const dynamicText = document.getElementById('dynamicText');
-
-        function showImage(src, text = '') {
-            dynamicImage.src = src || '';
-            dynamicImage.style.display = src ? 'block' : 'none';
-            dynamicText.textContent = text || '';
-        }
-
-        function hideImage() {
-            showImage('');
-        }
-
-        function handleRowClick(row) {
-    const projectName = row.getAttribute('data-project-name');
-    if (projectName) {
-        // Remove any existing .html and add it back to ensure proper extension
-        const urlWithExtension = `/${projectName.replace('.html', '')}.html`;
-        
-        if (window.self !== window.top) {
-            // We're in an iframe, so navigate the parent window
-            window.parent.location.href = urlWithExtension;
-        } else {
-            // Direct navigation if not in iframe
-            window.location.href = urlWithExtension;
-        }
-    }
-}
-
-// Attach event listener to rows for redirection
-document.querySelectorAll('.table tbody tr').forEach(row => {
-    if (!row.classList.contains('expanded-row')) { // Only attach to main rows, not expanded rows
-        row.addEventListener('click', e => {
-            e.preventDefault(); // Prevent default behavior
-            e.stopPropagation(); // Prevent event bubbling
-            handleRowClick(row);
-        });
-    }
-});
-
-        let areRowsExpanded = false;
-
-        function toggleRows() {
-            const rows = document.querySelectorAll('.table tbody tr');
-
-            rows.forEach(row => {
-                const nextRow = row.nextElementSibling;
-                if (nextRow && nextRow.classList.contains('expanded-row')) {
-                    nextRow.style.display = areRowsExpanded ? 'none' : 'table-row';
-                    row.classList.toggle('active-row', !areRowsExpanded);
-                    if (!areRowsExpanded) {
-                        const imageSrc = row.getAttribute('data-image');
-                        showImage(imageSrc, row.getAttribute('data-text'));
-                    } else {
-                        hideImage();
-                    }
-                }
-            });
-
-            areRowsExpanded = !areRowsExpanded;
-            document.getElementById('expandText').textContent =
-                areRowsExpanded ? 'expand [Y]' : 'expand [N]';
-        }
-
-        // Attach event listener to the expand button
+        // Expand button listener
         document.getElementById('expandButton').addEventListener('click', toggleRows);
 
-        // Attach event listener to rows for redirection
+        // Main row listeners
         document.querySelectorAll('.table tbody tr').forEach(row => {
-            row.addEventListener('click', e => {
-                e.stopPropagation(); // Prevent triggering parent click events
-                handleRowClick(row);
-            });
+            if (!row.classList.contains('expanded-row')) {
+                row.addEventListener('mouseover', (e) => {
+                    const imageSrc = row.getAttribute('data-image');
+                    lastHoveredImageSrc = imageSrc;  // Store the last hovered image source
+                    showImage(imageSrc, row.getAttribute('data-text'));
+                    updateProjectDetails(row);
+                });
+
+                row.addEventListener('mouseout', hideImage);  // Keep displaying the last hovered image
+
+                row.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleRowClick(row);
+                });
+            }
         });
-    </script>
+
+       // Gallery image listeners
+       document.querySelectorAll('.image-gallery img').forEach(img => {
+           img.addEventListener('mouseover', (e) => {
+               const onmouseoverAttr = e.target.getAttribute('onmouseover');
+               let text = '';
+               if (onmouseoverAttr) {
+                   const match = onmouseoverAttr.match(/showImage\(this\.src,'(.+?)'\)/);
+                   if (match && match[1]) {
+                       text = match[1];
+                   }
+               }
+
+               lastHoveredImageSrc = e.target.src;  // Store the last hovered image source
+               showImage(e.target.src, text);
+               const parentRow = e.target.closest('tr').previousElementSibling;
+               if (parentRow) {
+                   updateProjectDetails(parentRow);
+               }
+           });
+
+           img.addEventListener('mouseout', hideImage);  // Keep displaying the last hovered image
+
+           img.addEventListener('click', (e) => {
+               e.stopPropagation();
+               if (typeof clickImage === 'function') {
+                   clickImage(e.target.src);
+               }
+           });
+       });
+   });
+</script>
+
 
 
 

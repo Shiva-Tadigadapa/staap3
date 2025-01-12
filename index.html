@@ -386,61 +386,83 @@ const scrollTrigger = gsap.to(sections2, {
 
 
 
+// Event listener for when the loader video ends
+document.getElementById('loader-video').addEventListener('ended', () => {
+    // Enable vertical scrolling
+    document.documentElement.style.overflowY = 'auto';
+    document.body.style.overflowY = 'auto';
 
-    // Event listener for when the video ends
-    document.getElementById('loader-video').addEventListener('ended', () => {
-      // Once the video ends, show the vertical scrollbar and allow scrolling
-      document.documentElement.style.overflowY = 'auto';  // Enable vertical scrolling
-      document.body.style.overflowY = 'auto';             // Enable vertical scrolling
+    // Hide the loader after the video ends
+    document.querySelector('.fullscreen-loader').style.display = 'none';
 
-      // Hide the loader after the video ends
-      document.querySelector('.fullscreen-loader').style.display = 'none';
+    // Wait for 4 seconds after the video ends before observing section visibility
+    setTimeout(startIntersectionObserver, 4000);
+});
 
-      // Wait for 4 seconds after the video ends before observing section visibility
-      setTimeout(startIntersectionObserver, 4000);  // Delay the intersection observer trigger by 4 seconds
-    });
+// Function to start text animation when the section comes into view
+function startTextAnimation() {
+    gsap.registerPlugin(TextPlugin);
+    const letters = document.querySelectorAll(".letter");
 
-    // Function to start text animation when the section comes into view
-    function startTextAnimation() {
-      gsap.registerPlugin(TextPlugin);
-      const letters = document.querySelectorAll(".letter");
-
-      letters.forEach((letter, index) => {
+    letters.forEach((letter, index) => {
         const word = letter.getAttribute("data-word");
         const tl = gsap.timeline({
-          delay: index * 0.3,  // Smooth stagger effect
-          defaults: { ease: "power2.inOut", duration: 1.2 }
+            delay: index * 0.3,  // Smooth stagger effect
+            defaults: { ease: "power2.inOut", duration: 1.2 }
         });
 
         // Smooth morph from letter to full word with spaces
         tl.to(letter, {
-          opacity: 1,
-          text: {
-            value: word,
-            delimiter: ""  // Ensures letter-by-letter expansion
-          },
-          duration: 1.2,
+            opacity: 1,
+            text: {
+                value: word,
+                delimiter: ""  // Ensures letter-by-letter expansion
+            },
+            duration: 1.2,
         });
-      });
-    }
+    });
+}
 
-    // Function to set up Intersection Observer
-    function startIntersectionObserver() {
-      const section = document.getElementById('animatedTitle');  // The section to observe
+// Function to set up Intersection Observer
+function startIntersectionObserver() {
+    const section = document.getElementById('animatedTitle');  // The section to observe
+    const videoContainer = document.querySelector('.section-2 .video-container');
 
-      const observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            startTextAnimation();  // Start the animation when the section is in view
-            observer.disconnect();  // Stop observing after the animation starts
-          }
-        });
-      }, {
-        threshold: 0.5  // Trigger when at least 50% of the section is in view
-      });
+            if (entry.isIntersecting) {
+                startTextAnimation();  // Start the animation when the section is in view
+                
+                // Remove blur effect on section 2 coming into view
+                gsap.to(videoContainer, {
+                    duration: 2,
+                    '--blur-amount': '0px', // Blur animation to 0px
+                    ease: 'power2.out',
+                });
 
-      observer.observe(section);  // Start observing the section
-    }
+                observer.disconnect();  // Stop observing after the animation starts
+            }
+        });
+    }, { threshold: 0.5 });  // Trigger when at least 50% of the section is in view
+
+    observer.observe(section);  // Start observing the section
+}
+
+// // Video blur removal animation on canplaythrough event
+// document.addEventListener('DOMContentLoaded', () => {
+//     const videoContainer = document.querySelector('.section-2 .video-container');
+
+//     videoContainer.querySelector('video').addEventListener('canplaythrough', () => {
+//         setTimeout(() => {
+//             gsap.to(videoContainer, {
+//                 duration: 2,
+//                 '--blur-amount': '0px', // Blur animation to 0px
+//                 ease: 'power2.out',
+//             });
+//         }, 8000); // Delay before animation starts
+//     });
+// });
+
 
     // Mode Button Functionality
     const modeButtons = document.querySelectorAll(".mode-options span");
@@ -561,20 +583,20 @@ const scrollTrigger = gsap.to(sections2, {
     window.addEventListener("scroll", updateNavigationOnVisibilityChange);
 
 
-    // Video blur removal animation on canplaythrough event
-    document.addEventListener('DOMContentLoaded', () => {
-      const videoContainer = document.querySelector('.section-2 .video-container');
+    // // Video blur removal animation on canplaythrough event
+    // document.addEventListener('DOMContentLoaded', () => {
+    //   const videoContainer = document.querySelector('.section-2 .video-container');
 
-      videoContainer.querySelector('video').addEventListener('canplaythrough', () => {
-        setTimeout(() => {
-          gsap.to(videoContainer, {
-            duration: 2,
-            '--blur-amount': '0px', // Blur animation to 0px
-            ease: 'power2.out',
-          });
-        }, 8000); // Delay before animation starts
-      });
-    });
+    //   videoContainer.querySelector('video').addEventListener('canplaythrough', () => {
+    //     setTimeout(() => {
+    //       gsap.to(videoContainer, {
+    //         duration: 2,
+    //         '--blur-amount': '0px', // Blur animation to 0px
+    //         ease: 'power2.out',
+    //       });
+    //     }, 8000); // Delay before animation starts
+    //   });
+    // });
 
 
 
