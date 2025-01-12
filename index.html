@@ -131,10 +131,12 @@
 
 <body>
   <div class="fullscreen-loader">
-    <video id="loader-video" autoplay muted>
-      <source src="./assets//videos/loading2.mp4" type="video/mp4">
+    <video id="loader-video" autoplay muted playsinline>
+      <source src="./assets/videos/loading2.mp4?v=1" type="video/mp4">
+      <source src="./assets/videos/loading2.webm?v=1" type="video/webm">
       Your browser does not support the video tag.
     </video>
+    
   </div>
 
 
@@ -198,8 +200,11 @@
     <section class="section-2 panel">
       <div class="video-container">
         <video autoplay muted loop playsinline>
-          <source src="./assets/videos/tovo.webm" type="video/mp4" />
+          <source src="./assets/videos/tovo.mp4" type="video/mp4">   <!-- iOS Compatible -->
+          <source src="./assets/videos/tovo.webm" type="video/webm"> <!-- Web Optimized -->
+          Your browser does not support the video tag.
         </video>
+        
 
 
       </div>
@@ -251,8 +256,11 @@
     <section class="section-2 panel" id="connect">
       <div class="video-container">
         <video autoplay muted loop playsinline>
-          <source src="./assets/videos/tovo.webm" type="video/mp4" />
+          <source src="./assets/videos/tovo.mp4" type="video/mp4">   <!-- iOS Compatible -->
+          <source src="./assets/videos/tovo.webm" type="video/webm"> <!-- Web Optimized -->
+          Your browser does not support the video tag.
         </video>
+        
       </div>
       <div class="hero_content">
         <div class="hero_content_title">Staap</div>
