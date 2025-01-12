@@ -21,6 +21,27 @@
             font-family: "Helvetica Oblique";
             src: url("../assets/fonts/Helvetica-Oblique.ttf") format("truetype");
         }
+        @media (max-width: 768px) {
+  .container {
+    display: grid;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    grid-auto-flow: dense !important; /* Prioritizes filling in reverse order */
+    direction: rtl !important;       
+}
+
+  .container > * {
+    direction: ltr !important; /* Keeps content inside normal */
+  }
+  body{
+    font-size: 10px !important;
+    white-space: nowrap !important;
+  }
+  .sort-text {
+            position: relative;
+            left: -55% !important;
+        }
+}
 
         body {
             margin: 0;

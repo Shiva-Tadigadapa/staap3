@@ -28,7 +28,55 @@
             
             font-family: Helvetica, sans-serif;
         }
+        @media (max-width: 768px) {
+            .backbtn {
+            position: fixed;
+            top: 10px !important;
+            left: 10px !important;
+            z-index: 1000;
+        }
+            .container {
+                padding: 20px !important;
+                margin-top: 40px !important;
+                flex-direction: column;
+            }
 
+            .project-content {
+                grid-template-columns: 1fr !important;
+                gap: 60px !important;
+                margin-bottom: 40px;
+            }
+
+            .video-container video {
+                width: 100% !important;
+                height: 300px !important;
+            }
+
+            .video-container {
+                top: 0 !important;
+                right: 0px !important;
+            }
+
+            .image-container img {
+                width: 100% !important;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .image-container {
+                width: 100% !important;
+                aspect-ratio: 16/8;
+                background: #333;
+                overflow: hidden;
+            }
+
+            .seconimage {
+                width: 70% !important;
+                aspect-ratio: 16/10 !important;
+                /* flex-direction: column !important; */
+            }
+
+        }
         /* Hide scrollbar for Chrome, Safari and Opera */
         ::-webkit-scrollbar {
             display: none;
