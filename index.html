@@ -50,7 +50,7 @@
     overflow-y: hidden;
   }
 /* Hide the fullscreen loader on screens smaller than 768px (mobile) */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .fullscreen-loader {
     display: none !important;
      
@@ -61,7 +61,7 @@
     padding: 0;
     overflow-y: scroll;
   }
-}
+} */
 
   /* Fullscreen loader */
   .fullscreen-loader {
@@ -130,6 +130,15 @@
 </style>
 
 <body>
+  <div class="mobile-menu">
+ 
+    <a  class="nav_home" id="home-link" href="#home">home</a>
+    <a id="projects-link" href="#projects">projects</a>
+    <a id="about-link" href="#about">about</a>
+    <a id="publication-link" href="#publication">publication</a>
+    <a id="connect-link" href="#connect">connect</a>
+    <a class="email-link">write@staap.in</a>
+  </div>
   <div class="fullscreen-loader">
     <video id="loader-video" autoplay muted playsinline>
       <source src="./assets/videos/loading2.mp4?v=1" type="video/mp4">
@@ -163,14 +172,7 @@
     </div>
   </nav>
 
-  <!-- <div class="mobile-menu">
-    <a class="nav_home">home</a>
-    <a>projects</a>
-    <a>about</a>
-    <a>publication</a>
-    <a>connect</a>
-    <a class="email-link">write@staap.in</a>
-  </div> -->
+  
   <div class="mode-options">
     <span data-mode="text">text mode [N]</span>
     <span data-mode="dark">dark mode [N]</span>
