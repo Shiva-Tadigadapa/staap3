@@ -127,6 +127,19 @@
     /* Smooth transition */
     pointer-events: none;
   }
+  .hero_content {
+  opacity: 0;
+  /* transform: scale(0.8); */
+  filter: blur(50px);
+  transition: opacity 2.5s ease, transform 2.5s ease, filter 2s ease;
+}
+
+.hero_content.active {
+  opacity: 1;
+  /* transform: scale(1); */
+  filter: blur(0);
+}
+
 </style>
 
 <body>
@@ -436,6 +449,12 @@ function startTextAnimation() {
         });
     });
 }
+const video = document.getElementById("loader-video");
+const heroContent = document.querySelector(".hero_content");
+
+video.addEventListener("ended", () => {
+  heroContent.classList.add("active");
+});
 
 // Function to set up Intersection Observer
 function startIntersectionObserver() {
